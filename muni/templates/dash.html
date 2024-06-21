@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
+	<meta name="author" content="AdminKit">
+	<meta name="keywords"
+		content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link rel="shortcut icon" href="img/icons/icon-48x48.png" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+	<link rel="canonical" href="https://demo-basic.adminkit.io/" />
+
+	<title>Reporte(HG)- GDHIS</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/sweetalert2.min.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
+
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+	<div class="wrapper">
+		{% include 'models/aside.html' %}
+
+		<div class="main">
+			{% include 'models/navbar.html' %}
+
+			<main class="content">
+				<div class="container-fluid p-0">
+
+					<h1 class="h3 mb-3"><strong>Vista</strong> General</h1>
+
+					<div class="row">
+						<div class="col-xl-6 col-xxl-5 d-flex">
+							<div class="w-100">
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="card bg-info">
+											<div class="card-body">
+												<div class="row">
+													<div class="col mt-0">
+														<h5 class="card-title text-black">Total de niños</h5>
+													</div>
+													<div class="col-auto">
+														<div class="stat text-primary">
+															<i class="align-middle "><img
+																	src="{{ url_for('static', filename='img/icons/child.svg') }}"></i>
+														</div>
+													</div>
+												</div>
+												<h1 class="mt-1 mb-3">{{ num_ninos }}</h1>
+												<div class="mb-0">
+													<span class="text-black">Menores de 5 años</span>
+												</div>
+											</div>
+										</div>
+										<div class="card bg-warning">
+											<div class="card-body">
+												<div class="row">
+													<div class="col mt-0">
+														<h5 class="card-title text-black">Control de Hemoglobina</h5>
+													</div>
+
+													<div class="col-auto">
+														<div class="stat text-primary">
+															<i class="align-middle"><img
+																	src="{{ url_for('static', filename='img/icons/control.svg') }}"></i>
+														</div>
+													</div>
+												</div>
+												<h1 class="mt-1 mb-3">{{ num_reporte }}</h1>
+												<div class="mb-0">
+													<span class="text-black">Niños siendo tratados</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="card bg-danger">
+											<div class="card-body">
+												<div class="row">
+													<div class="col mt-0">
+														<h5 class="card-title text-black">Establecimientos</h5>
+													</div>
+
+													<div class="col-auto">
+														<div class="stat text-primary">
+															<!-- data-feather="dollar-sign" -->
+															<i class="align-middle"><img
+																	src="{{ url_for('static', filename='img/icons/esta.svg') }}"></i>
+														</div>
+													</div>
+												</div>
+												<h1 class="mt-1 mb-3">14</h1>
+												<div class="mb-0">
+													<span class="text-black">Del distrito de Rio Negro</span>
+												</div>
+											</div>
+										</div>
+										<div class="card bg-success">
+											<div class="card-body">
+												<div class="row">
+													<div class="col mt-0">
+														<h5 class="card-title text-black">Programas Sociales</h5>
+													</div>
+													<div class="col-auto">
+														<div class="stat text-primary">
+															<i class="align-middle"><img
+																	src="{{ url_for('static', filename='img/icons/progra.svg') }}"></i>
+														</div>
+													</div>
+												</div>
+												<h1 class="mt-1 mb-3">6</h1>
+												<div class="mb-0">
+													<span class="text-black">Para menores a 5 años</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-xl-6 col-xxl-7">
+							<div class="card flex-fill ">
+								<div class="card-header">
+									<h5 class="card-title mb-0 text-black">Niños con anemia</h5>
+								</div>
+								<div class="card-header" style="display: flex; justify-content: space-between;">
+									<label for="select-year " class="text-black">Selecciona un año:</label>
+									<select id="select-year">
+										<!-- Las opciones de año se agregarán dinámicamente aquí -->
+									</select>
+									<label id="total-label"></label>
+								</div>
+								<div class="card-body py-3">
+
+									<div class="chart chart-sm">
+										<div id="chart-container">
+											<canvas id="chartjs-dashboard-line"></canvas>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12 col-md-6 col-xxl-3 d-flex order-2 order-xxl-3">
+							<div class="card flex-fill w-100">
+								<div class="card-header">
+									<h5 class="card-title mb-0 text-black">Niños por Establecimiento</h5>
+								</div>
+								<div class="card-body d-flex">
+									<div class="align-self-center w-100">
+										<div class="py-3">
+											<div class="chart chart-xs">
+												<canvas id="chartjs-dashboard-pie"></canvas>
+												<div>
+												</div>
+											</div>
+											<div id="tabla-container"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="col-12 col-md-12 col-xxl-6 d-flex order-3 order-xxl-2">
+							<div class="card flex-fill w-100">
+								<div class="card-header">
+
+									<h5 class="card-title mb-0 text-black">Mapa de Establecimientos</h5>
+								</div>
+								<div class="card-body px-4">
+									<div id="world_map" style="height:350px;"></div>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 col-md-6 col-xxl-3 d-flex order-1 order-xxl-1">
+							<div class="card flex-fill">
+								<div class="card-header">
+
+									<h5 class="card-title mb-0 text-black">Calendario</h5>
+								</div>
+								<div class="card-body d-flex">
+									<div class="align-self-center w-100">
+										<div class="chart">
+											<div id="datetimepicker-dashboard"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-start">
+							<p class="mb-0">
+								<a class="text-black target="_blank"><strong>Gerencia</strong></a> - <a
+									class="text-black" target="_blank"><strong>Desarrollo Humano e Inclución Social</strong></a> &copy;
+							</p>
+
+						</div>
+					</div>
+			</footer>
+		</div>
+	</div>
+	<script>
+
+	</script>
+	<script src="{{url_for('static', filename='js/sweetalert2.all.min.js') }}"></script>
+	<script src="{{url_for('static', filename='js/app.js') }}"></script>
+	<script src="{{url_for('static', filename='js/main.js') }}"></script>
+	<script src="{{url_for('static', filename='js/jquery.js') }}"></script>
+	<script src="{{url_for('static', filename='js/bootstrap.min.js') }}"></script>
+	<script src="{{url_for('static', filename='js/contenedor.js') }}"></script>
+	<!-- GRAFICAS -->
+	<script>
+		var data = JSON.parse('{{ data_json | safe }}');
+		var establecimientos = data.establecimientos;
+		var num_ninosEsta = data.num_ninosEsta;
+		// console.log(establecimientos)
+		// console.log(num_ninosEsta)
+		var colores = [
+			"#FF5733",
+			"#33FF57",
+			"#FF33FF",
+			"#FFA07A",
+			"#800080",
+			"#2F4F4F",
+			"#20B2AA",
+			"#BA55D3",
+			"#FFD700",
+			"#BA55D3",
+			"#FF1493"
+		];
+		for (var i = 0; i < 11; i++) {
+			colores.push("color_" + i); // Puedes reemplazar "color_" + i con los valores de tus colores adicionales
+		}
+
+
+		document.addEventListener("DOMContentLoaded", function () {
+			// Pie chart
+			new Chart(document.getElementById("chartjs-dashboard-pie"), {
+				type: "pie",
+				data: {
+					labels: establecimientos,
+					datasets: [{
+						data: num_ninosEsta,
+						backgroundColor: [
+							window.theme.primary,
+							window.theme.warning,
+							window.theme.danger,
+							colores[0],
+							colores[1],
+							colores[2],
+							colores[3],
+							colores[4],
+							colores[5],
+							colores[6],
+							colores[7],
+							colores[8],
+							colores[9],
+							colores[10]
+						],
+						borderWidth: 3
+					}]
+				},
+				options: {
+					responsive: !window.MSInputMethodContext,
+					maintainAspectRatio: false,
+					legend: {
+						display: false
+					},
+					cutoutPercentage: 30
+				}
+			});
+		});
+
+		// Construir la tabla HTML
+		// var tablaHTML = '<table class="table mb-0">' +
+		// 	'<thead>' +
+		// 	'<tr>' +
+		// 	'<th>Nombre</th>' +
+		// 	'<th class="text-end">Valor</th>' +
+		// 	'</tr>' +
+		// 	'</thead>' +
+		// 	'<tbody>';
+
+		// for (var i = 0; i < establecimientos.length; i++) {
+		// 	tablaHTML += '<tr>' +
+		// 		'<td>' + establecimientos[i] + '</td>' +
+		// 		'<td class="text-end">' + num_ninosEsta[i] + '</td>' +
+		// 		'</tr>';
+		// }
+
+		// tablaHTML += '</tbody>' +
+		// 	'</table>';
+
+		// // Insertar la tabla HTML en el contenedor deseado
+		// document.getElementById('tabla-container').innerHTML = tablaHTML;
+		// // Ahora puedes utilizar las variables establecimientos y num_ninosEsta en tu código JavaScript
+	</script>
+	<script>
+		var data = JSON.parse('{{ data_anemia | safe }}');
+		var fechas_anemia = data.fechas;
+		var anemia = data.num_anemia;
+		// console.log(fechas_anemia)
+		// console.log(anemia)
+
+		// Objeto para almacenar el recuento de anemia por año
+		var conteo_por_anio = {};
+
+		// Calcular el conteo por año
+		fechas_anemia.forEach(function (fecha_str, index) {
+			var fecha = new Date(fecha_str); // Convertir la cadena de fecha a un objeto de fecha
+			var anio = fecha.getFullYear(); // Obtener el año de la fecha
+
+			// Solo contar si el año es mayor que 2018 y el recuento de anemia es menor que 11
+			if (anio > 2018) {
+				// Incrementar el contador correspondiente al año actual
+				if (conteo_por_anio[anio]) {
+					conteo_por_anio[anio]++;
+				} else {
+					conteo_por_anio[anio] = 1; // Si es la primera vez que se encuentra este año, inicializar el contador en 1
+				}
+			}
+		});
+
+		// Ahora conteo_por_anio contiene el recuento de años con anemia menor que 11 para cada año.
+		// Puedes imprimirlo o realizar cualquier otra acción necesaria.
+		console.log("Recuento de años con anemia menor que 11 por año:");
+		console.log(conteo_por_anio);
+
+		// Obtener el select y el label para mostrar el total
+		var selectYear = document.getElementById("select-year");
+		var totalLabel = document.createElement("label");
+		totalLabel.setAttribute("id", "total-label");
+
+		// Evento al cambiar la opción del select
+		selectYear.addEventListener("change", function () {
+			var selectedYear = parseInt(selectYear.value);
+			var total = conteo_por_anio[selectedYear] || 0;
+			totalLabel.textContent = "Total de niños con anemia: " + total;
+		});
+
+		// Agregar el label del total después del select
+		selectYear.parentNode.insertBefore(totalLabel, selectYear.nextSibling);
+
+
+		var datosAgrupadosPorAnio = {};
+
+		// Iterar sobre las fechas y agrupar los datos por año
+		fechas_anemia.forEach(function (fecha, index) {
+			var anio = new Date(fecha).getFullYear();
+			var mes = new Date(fecha).getMonth() + 1; // Los meses van de 0 a 11, así que sumamos 1 para que vayan de 1 a 12
+			var nivelAnemia = anemia[index];
+
+			// Agregar una condición para solo incluir los años mayores de 2019 y niveles de anemia menores o iguales a 11
+			if (anio > 2018) {
+				if (!datosAgrupadosPorAnio[anio]) {
+					datosAgrupadosPorAnio[anio] = {};
+				}
+
+				if (!datosAgrupadosPorAnio[anio][mes]) {
+					datosAgrupadosPorAnio[anio][mes] = [];
+				}
+
+				datosAgrupadosPorAnio[anio][mes].push({
+					fecha: fecha,
+					anemia: nivelAnemia
+				});
+			}
+		});
+		// Ahora datosAgrupadosPorAnio contiene los datos agrupados por año
+		// console.log(datosAgrupadosPorAnio);
+
+		document.addEventListener("DOMContentLoaded", function () {
+			// Obtener el elemento del select
+			var selectYear = document.getElementById("select-year");
+
+			// Obtener las claves (años) del objeto datosAgrupadosPorAnio
+			var years = Object.keys(datosAgrupadosPorAnio);
+
+			// Agregar las opciones de año al select
+			years.forEach(function (year) {
+				var option = document.createElement("option");
+				option.value = year;
+				option.text = year;
+				selectYear.appendChild(option);
+			});
+
+			// Función para obtener los datos de repeticiones por mes de un año
+			function getRepeticionesPorMes(year) {
+				var repeticionesPorMes = new Array(12).fill(0);
+				var datosPorAnio = datosAgrupadosPorAnio[year];
+				if (datosPorAnio) {
+					for (var mes in datosPorAnio) {
+						repeticionesPorMes[parseInt(mes) - 1] += datosPorAnio[mes].length;
+					}
+				}
+				return repeticionesPorMes;
+			}
+
+			// Crear la instancia de Chart
+			var chart = new Chart(document.getElementById("chartjs-dashboard-line"), {
+				type: "line",
+				data: {
+					labels: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+					datasets: []
+				},
+				options: {
+					maintainAspectRatio: false,
+					legend: {
+						display: false
+					},
+					tooltips: {
+						intersect: false
+					},
+					hover: {
+						intersect: true
+					},
+					plugins: {
+						filler: {
+							propagate: false
+						}
+					},
+					scales: {
+						xAxes: [{
+							reverse: true,
+							gridLines: {
+								color: "rgba(0,0,0,0.0)"
+							}
+						}],
+						yAxes: [{
+							ticks: {
+								stepSize: 1
+							},
+							display: true,
+							borderDash: [3, 3],
+							gridLines: {
+								color: "rgba(0,0,0,0.0)"
+							}
+						}]
+					}
+				}
+			});
+
+			// Función para actualizar el gráfico cuando se selecciona un año
+			function updateChart() {
+				var selectedYear = parseInt(selectYear.value);
+
+				// Obtener datos del año seleccionado
+				var datosYearSeleccionado = {
+					label: " Niños con anemia ",
+					fill: false,
+					borderColor: window.theme.primary,
+					data: getRepeticionesPorMes(selectedYear)
+				};
+
+				// Obtener datos del año anterior, si existe
+				var datosYearAnterior = null;
+				var yearAnterior = selectedYear - 1;
+				if (years.includes(yearAnterior.toString())) {
+					datosYearAnterior = {
+						label: "Niños con anemia ",
+						fill: false,
+						borderColor: "red",
+						data: getRepeticionesPorMes(yearAnterior)
+					};
+				}
+
+				// Actualizar los datos de la gráfica
+				chart.data.datasets = [datosYearSeleccionado];
+				if (datosYearAnterior) {
+					chart.data.datasets.push(datosYearAnterior);
+				}
+				chart.update();
+			}
+
+			// Llamar a la función updateChart al cargar la página
+			updateChart();
+
+			// Agregar un evento de cambio al select para actualizar el gráfico cuando se seleccione un año
+			selectYear.addEventListener("change", updateChart);
+		});
+
+
+
+	</script>
+	
+	
+	<!-- <script src="{{url_for('static', filename='js/graficas/linea.js') }}"></script> -->
+	
+	
+	<script src="{{url_for('static', filename='js/graficas/circulo.js') }}"></script>
+	<script src="{{url_for('static', filename='js/graficas/barras.js') }}"></script>
+	<script src="{{url_for('static', filename='js/graficas/mapa.js') }}"></script>
+	<script src="{{url_for('static', filename='js/graficas/calendario.js') }}"></script>
+	
+
+
+</body>
+
+</html>

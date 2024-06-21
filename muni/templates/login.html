@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+
+<head>
+    <link rel="shortcut icon" href="#" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Reporte(HG)- GDHIS</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sweetalert2.min.css') }}">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/material-design-iconic-font.min.css') }}"> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/awezome.css') }}">  -->
+
+
+
+</head>
+
+<body>
+
+    <div class="container-login">
+        <div class="wrap-login">
+            <form class="login-form validate-form" id="formLogin" action="/login" method="POST">
+                <span class="login-form-title">INICIE SESION</span>
+
+                <div class="wrap-input100" data-validate="Usuario incorrecto">
+                    <input class="input100" type="text" id="usuario" name="usuario" placeholder="Usuario">
+                    <span class="focus-efecto"></span>
+                </div>
+
+                <div class="wrap-input100" data-validate="Password incorrecto">
+                    <input class="input100" type="password" id="password" name="password" placeholder="Contraseña">
+                    <span class="focus-efecto"></span>
+                    <span class="toggle-password" onclick="togglePassword()">
+                        <i class="bi bi-eye-fill" id="toggleIcon"></i>
+                    </span>
+                </div>
+
+                <div class="container-login-form-btn">
+                    <div class="wrap-login-form-btn">
+                        <div class="login-form-bgbtn"></div>
+                        <button type="submit" name="submit" class="login-form-btn">Ingresar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="{{url_for('static', filename='js/jquery.js') }}"></script>
+    <script src="{{url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{url_for('static', filename='js/sweetalert2.all.min.js') }}"></script>
+    <!-- <script src="js/codigo.js"></script>     -->
+    {% if error_message %}
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ error_message }}'
+        });
+    </script>
+    {% endif %}
+    <script>
+        function togglePassword() {
+            var passwordField = document.getElementById('password');
+            var toggleIcon = document.getElementById('toggleIcon');
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.classList.remove('bi-eye-fill');
+                toggleIcon.classList.add('bi-eye-slash-fill');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.classList.remove('bi-eye-slash-fill');
+                toggleIcon.classList.add('bi-eye-fill');
+            }
+        }
+    </script>
+</body>
+
+</html>

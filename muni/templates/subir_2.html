@@ -1,0 +1,147 @@
+
+<style>
+    #loading-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999; /* Asegúrate de que el spinner esté sobre otros elementos */
+}
+</style>
+<h1 class="texto text-center mb-4">Carga tus archivos</h1>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-sm-5 mb-4 mb-sm-0">
+            <div class="card mb-4 bg-success">
+                <div class="card-body">
+                    <h5 class="card-title text-black">1°. Sube el padrón nominal</h5>
+                    <form id="uploadForm"  action="{{ url_for('subirTodo') }}" method="POST" autocomplete="off"
+                        enctype="multipart/form-data">
+                        <div class="custom-file mb-3">
+                            <input type="file" class="custom-file-input" name="file" accept=".xlsx" required>
+                        </div>
+                        <div class="form-group mb-5 text-center mt-3">
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <a class="btn btn-primary">Enviar a la base de datos</a></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="card mb-4">
+                <div class="card-body bg-info">
+                    <h5 class="card-title text-black">2°. Sube los reportes de Hemoglobina</h5>
+                    <form id= "uploadForm2" action="{{url_for('subirReporte_hemo')}}" method="POST" autocomplete="off"
+                        enctype="multipart/form-data" class="mb-4">
+                        <div class="custom-file">
+                            <input type="file" name="file" accept=".xlsx" required>
+                        </div>
+                        <div class="form-group mb-5 text-center mt-3">
+                            <button type="submit" class="btn btn-primary btn-sm"><a class="btn btn-primary">Enviar a la
+                                    base de datos</a></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loading-spinner" style="display: none;">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+<script>
+ // Función para manejar la respuesta del servidor
+function handleResponse(response) {
+    // Ocultar el spinner
+    document.getElementById('loading-spinner').style.display = 'none';
+
+    if (response.success) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: response.message
+        }).then(() => {
+            // Limpiar los inputs del formulario
+            document.getElementById('uploadForm').reset();
+            document.getElementById('uploadForm2').reset();
+        });
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: response.message // Mostrar el mensaje de error recibido del servidor
+        });
+    }
+}
+
+// Función para mostrar el spinner
+function showSpinner() {
+    document.getElementById('loading-spinner').style.display = 'block';
+}
+
+// Función para ocultar el spinner
+function hideSpinner() {
+    document.getElementById('loading-spinner').style.display = 'none';
+}
+
+// Escuchar el evento submit del formulario
+document.getElementById('uploadForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Evitar que el formulario se envíe por defecto
+
+    showSpinner(); // Mostrar el spinner
+
+    // Enviar la solicitud al servidor usando fetch
+    fetch('/subirTodo', {
+        method: 'POST',
+        body: new FormData(this) // Enviar datos del formulario
+    })
+    .then(response => response.json())
+    .then(data => {
+        handleResponse(data); // Manejar la respuesta del servidor
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Se produjo un error al procesar la solicitud.'
+        });
+    })
+    .finally(() => {
+        hideSpinner(); // Ocultar el spinner sin importar el resultado
+    });
+});
+
+document.getElementById('uploadForm2').addEventListener('submit', function(event) {
+    event.preventDefault(); // Evitar que el formulario se envíe por defecto
+
+    showSpinner(); // Mostrar el spinner
+
+    // Enviar la solicitud al servidor usando fetch
+    fetch('/subirReporte_hemo', {
+        method: 'POST',
+        body: new FormData(this) // Enviar datos del formulario
+    })
+    .then(response => response.json())
+    .then(data => {
+        handleResponse(data); // Manejar la respuesta del servidor
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Se produjo un error al procesar la solicitud.'
+        });
+    })
+    .finally(() => {
+        hideSpinner(); // Ocultar el spinner sin importar el resultado
+    });
+});
+</script>

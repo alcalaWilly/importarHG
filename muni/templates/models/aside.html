@@ -1,0 +1,93 @@
+<nav id="sidebar" class="sidebar js-sidebar">
+    <div class="sidebar-content js-simplebar">
+        <a class="sidebar-brand" href="/">
+            <span class="align-middle">Panel Administrador</span>
+        </a>
+
+        <ul class="sidebar-nav">
+            <li class="sidebar-header">
+                Páginas
+            </li>
+
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="/dash">
+                    <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Inicio</span>
+                </a>
+            </li>
+            <li class="sidebar-item ">
+                <a class="sidebar-link" href="/subirTodoPage" onclick="CargarContenido('content','/subirTodoPage'); return false;">
+                    <i class="align-middle"><img class="align-middle"
+                            src="{{ url_for('static', filename='img/icons/subir.svg') }}"></i> <span
+                        class="align-middle">Subir archivos</span>
+
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" onclick="toggleMenu('ui-basic3');" aria-expanded="false">
+                    <i class="align-middle"><img src="{{ url_for('static', filename='img/icons/tabla.svg') }}"></i>
+                    <span class="align-middle">Reportes</span>
+                    <i class="menu-arrow" data-feather="chevron-right" id="menu-arrow"></i>
+                </a>
+                <div class="collapse" id="ui-basic3">
+                    <ul class="flex-column sub-menu" id="cred-submenu">
+                        <li class="nav-item">
+                            <a class="sidebar-link" 
+                            href="/padron"  onclick="CargarContenido('content','/padron'); return false;"
+                            style="cursor:pointer;">
+                                <i></i>Padrón 
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="sidebar-link"
+                            href="/anemia"  onclick="CargarContenido('content','/anemia'); return false;"
+                            style="cursor:pointer;">
+                                <i></i>Niños con Anemia
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="sidebar-link"
+                            href="/descarga"  onclick="CargarContenido('content','/descarga'); return false;"
+                            style="cursor:pointer;">
+                                <i></i>Descargar
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            
+
+
+        </ul>
+    </div>
+</nav>
+<script>
+    function toggleMenu(targetId) {
+        var targetMenu = document.getElementById(targetId);
+        var menuArrow = document.getElementById('menu-arrow');
+
+        var ariaExpanded = targetMenu.getAttribute('aria-expanded');
+        if (ariaExpanded === 'false') {
+            targetMenu.setAttribute('aria-expanded', 'true');
+            menuArrow.setAttribute('data-feather', 'chevron-right');
+        } else {
+            targetMenu.setAttribute('aria-expanded', 'false');
+            menuArrow.setAttribute('data-feather', 'chevron-down');
+        }
+
+        targetMenu.classList.toggle('show');
+        feather.replace(); // Actualizar los íconos Feather
+
+        // Revertir el icono después de 3 segundos
+        setTimeout(function () {
+            if (ariaExpanded === 'false') {
+                menuArrow.setAttribute('data-feather', 'chevron-down');
+            } else {
+                menuArrow.setAttribute('data-feather', 'chevron-right');
+            }
+            feather.replace(); // Actualizar los íconos Feather después de cambiar el icono
+        }, 3000); // 3000 milisegundos = 3 segundos
+    }
+
+
+</script>

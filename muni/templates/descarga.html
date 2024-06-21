@@ -1,0 +1,438 @@
+<div class="row text-center">
+    <div class="col">
+        <h1 class="titulo mb-4">Exporta archivos</h1>
+    </div>
+</div>
+
+<!-- Mostrar Modal -->
+<div class="modal fade" id="NiñosViewModal" tabindex="-1" aria-labelledby="registroLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 font-weight-bold" id="registroLabel">PADRES DEL MENOR</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="#" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <!-- Columna para los datos del Padre -->
+                        <div class="col-md-6">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="registroLabel">Datos del Padre</h1>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nombresPadre" class="form-label">Nombres:</label>
+                                <label type="text" id="nombresPadre_view" class="form-control nombresPadre_view"></label>
+                            </div>
+                            <div class="mb-3">
+                                <label for="apellidosPadre" class="form-label">Apellidos:</label>
+                                <label type="text" id="apellidosPadre_view" class="form-control apellidosPadre_view"></label>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dniPadre" class="form-label">DNI:</label>
+                                <label type="text" id="dniPadre_view" class="form-control dniPadre_view"></label>
+                            </div>
+                        </div>
+                        <!-- Columna para los datos de la Madre -->
+                        <div class="col-md-6">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="registroLabel">Datos de la Madre</h1>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nombresMadre" class="form-label">Nombres:</label>
+                                <label type="text" id="nombresMadre_view" class="form-control nombresMadre_view"></label>
+                            </div>
+                            <div class="mb-3">
+                                <label for="apellidosMadre" class="form-label">Apellidos:</label>
+                                <label type="text" id="apellidosMadre_view" class="form-control apellidosMadre_view"></label>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dniMadre" class="form-label">DNI:</label>
+                                <label type="text" id="dniMadre_view" class="form-control dniMadre_view"></label>
+                            </div>
+                            <div class="mb-3">
+                                <label for="celularMadre" class="form-label">N° de Celular:</label>
+                                <label type="text" id="celularMadre_view" class="form-control celularMadre_view"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card">
+    <div class="card-body">
+        <form id="frmcred ">
+            <div class="row ">
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label class="mb-2">Seleccione el año</label>
+                        <select name="años" id="años" class="form-select fechaCon">
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label class="mb-2">Seleccione el mes</label>
+                        <select name="mes" id="mes" class="form-select">
+
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-5">
+                        <label class="mb-2">Para exportar en formato Excel: </label>
+                        <a id="import" class="btn btn-success">
+                            Descargar Excel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="main-container" class="table-responsive">
+    <table id="data_table">
+        <thead>
+            <tr>
+                <th scope="col" nowrap class="text-center">Num</th>
+                <th scope="col" nowrap class="text-center">Nombres</th>
+                <th scope="col" nowrap class="text-center">Apellidos</th>
+                <th scope="col" nowrap class="text-center">DNI</th>
+                <th scope="col" nowrap class="text-center">Fecha de Nacimiento</th>
+                <th scope="col" nowrap class="text-center">Edad</th>
+                <th scope="col" nowrap class="text-center">Sexo</th>
+                <th scope="col" nowrap class="text-center">Programa Social</th>
+                <th scope="col" nowrap class="text-center">Establecimiento</th>
+                <th scope="col" nowrap class="text-center">Último control</th>
+                <th scope="col" nowrap class="text-center">Último HG</th>
+                <th scope="col" nowrap class="text-center">Más</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        // Obtener el select de años
+        var selectYear = document.getElementById("años");
+
+        // Función para agregar opciones al select de años
+        function agregarOpcion(select, texto, valor) {
+            var option = document.createElement("option");
+            option.text = texto;
+            option.value = valor;
+            select.add(option);
+        }
+
+        // Obtener el select de meses
+        var selectMonth = document.getElementById("mes");
+
+        // Función para agregar opciones al select de meses
+        function agregarOpcionMes(select, texto, valor) {
+            var option = document.createElement("option");
+            option.text = texto;
+            option.value = valor;
+            select.add(option);
+        }
+
+        // Evento al cambiar la opción del select de años
+        selectYear.addEventListener("change", function () {
+            var selectedYear = parseInt(selectYear.value);
+            var mesesDisponibles = [];
+
+            // Obtener los meses disponibles para el año seleccionado
+            fechas_anemia.forEach(function (fecha_str) {
+                var fecha = new Date(fecha_str);
+                var anio = fecha.getFullYear();
+                var mes = fecha.getMonth() + 1; // Los meses se indexan desde 0, entonces se suma 1
+
+                if (anio === selectedYear && mesesDisponibles.indexOf(mes) === -1) {
+                    mesesDisponibles.push(mes);
+                }
+            });
+
+            // Limpiar el select de meses
+            selectMonth.innerHTML = "";
+
+            // Agregar las opciones de meses disponibles
+            if (mesesDisponibles.length === 12) {
+                // Si hay 12 meses disponibles, agregar todas las opciones
+                for (var i = 1; i <= 12; i++) {
+                    agregarOpcionMes(selectMonth, obtenerNombreMes(i), i);
+                }
+            } else {
+                // Si no hay 12 meses disponibles, agregar solo los disponibles
+                mesesDisponibles.forEach(function (mes) {
+                    agregarOpcionMes(selectMonth, obtenerNombreMes(mes), mes);
+                });
+            }
+        });
+
+        // Agregar opciones al select de años con los años disponibles
+        fechas_anemia.forEach(function (fecha_str) {
+            var fecha = new Date(fecha_str);
+            var anio = fecha.getFullYear();
+
+            // Solo agregar el año si es mayor que 2018
+            if (anio > 2018) {
+                // Verificar si el año ya ha sido agregado para evitar duplicados
+                var optionExistente = selectYear.querySelector('option[value="' + anio + '"]');
+                if (!optionExistente) {
+                    agregarOpcion(selectYear, anio, anio);
+                }
+            }
+        });
+
+        // Función para obtener el nombre del mes dado su número (1-12)
+        function obtenerNombreMes(numeroMes) {
+            var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+            return meses[numeroMes - 1];
+        }
+        // Seleccionar el año 2022 por defecto
+        selectYear.value = "2022";
+
+        // Disparar el evento change manualmente para que se actualicen los meses disponibles
+        selectYear.dispatchEvent(new Event('change'));
+
+        // var data1 = JSON.parse('{{ data_tabla | safe }}');
+        // console.log(data1);
+    });
+
+
+
+</script>
+
+<script>
+    function cargarDatosFiltrados() {
+        $.ajax({
+            type: "GET",
+            url: "/tabla_dataAnemia",
+            success: function (response) {
+                var tbody = $('#data_table tbody');
+                tbody.empty(); // Limpiar el cuerpo de la tabla antes de agregar nuevas filas
+
+                // Obtener los valores seleccionados de los elementos select
+                var selectedYear = $('#años').val();
+                var selectedMonth = $('#mes').val();
+
+                // Filtrar los datos en función del año y mes seleccionados
+                var filteredData = response.datos[0].filter(function (item) {
+                    var fecha_last = new Date(item.fecha_last);
+                    return fecha_last.getFullYear() == parseInt(selectedYear) && (fecha_last.getMonth() + 1) == parseInt(selectedMonth);
+                });
+
+                var contador = 1;
+                filteredData.forEach(function (item) {
+                    var row = $('<tr>');
+                    // Agregar la columna de enumeración
+                    row.append($('<td nowrap class="text-center">').text(contador));
+                    // Incrementar el contador
+                    contador++;
+
+                    row.append($('<td nowrap class="text-center">').text(item.nombres));
+                    row.append($('<td nowrap class="text-center">').text(item.apellidos));
+                    row.append($('<td nowrap class="text-center niño_id">').text(item.tipoDocumento));
+                    row.append($('<td nowrap class="text-center">').text(item.fechaNacimiento));
+                    row.append($('<td nowrap class="text-center">').text(item.edad));
+                    row.append($('<td nowrap class="text-center">').text(item.descripcionSexo));
+                    row.append($('<td nowrap class="text-center">').text(item.programaSocial));
+                    row.append($('<td nowrap class="text-center">').text(item.descripcionEsta));
+                    row.append($('<td nowrap class="text-center">').text(item.fecha_last));
+                    row.append($('<td nowrap class="text-center">').text(item.HG_last));
+                    row.append($('<td nowrap class="text-center">\
+                                    <button href="#" type="button" class="btn btn-success viewbtn">Ver todo</button>\
+                                </td>'));
+                    tbody.append(row);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error al obtener los datos:", error);
+            }
+        });
+    }
+
+    $(document).on("click", ".viewbtn", function () {
+        var niño_id = $(this).closest('tr').find('.niño_id').text();
+        //alert(niño_id);
+        // console.log(niño_id);
+        $.ajax({
+        type: "POST",
+        url: "/mostrarPadres",
+        data: {
+            'niño_id': niño_id,
+        },
+        success: function (response) {
+            console.log("Response:", response);
+
+            if (response.datos) {
+                // Actualizar los elementos HTML con los datos de la madre
+                if (response.datos.madre && response.datos.madre.length > 0) {
+                    var madre = response.datos.madre[0];
+                    updateElement('.nombresMadre_view', madre.nombresMadre);
+                    updateElement('.apellidosMadre_view', madre.apellidoPaterno_Madre + " " + madre.apellidomaterno_Madre);
+                    updateElement('.dniMadre_view', madre.dniMadre);
+                    updateElement('.celularMadre_view', madre.celularMadre);
+                }
+
+                // Actualizar los elementos HTML con los datos del padre
+                if (response.datos.padre && response.datos.padre.length > 0) {
+                    var padre = response.datos.padre[0];
+                    updateElement('.nombresPadre_view', padre.nombresPadre);
+                    updateElement('.apellidosPadre_view', padre.apellidoPaterno_Padre + " " + padre.apellidomaterno_Padre);
+                    updateElement('.dniPadre_view', padre.dniPadre);
+                }
+
+                $('#NiñosViewModal').modal('show'); // Mostrar el modal
+            } else {
+                console.log("No data found for the given niño_id");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', status, error);
+        }
+    });
+
+    function updateElement(selector, value) {
+        var element = $(selector);
+        element.text(value);
+        if (value) {
+            element.addClass('bg-success text-white');
+        } else {
+            element.removeClass('bg-success text-white');
+        }
+    }
+    });
+
+
+    // Llamar a la función para cargar los datos al iniciar la página
+    cargarDatosFiltrados();
+
+    // Evento change para los select de año y mes
+    $('#años, #mes').change(function () {
+        // Llamar a la función para cargar los datos nuevamente
+        cargarDatosFiltrados();
+    });
+
+
+    // Función para cargar los datos filtrados según el año y mes seleccionados
+    function cargarDatosFiltrados() {
+        $.ajax({
+            type: "GET",
+            url: "/tabla_dataAnemia",
+            success: function (response) {
+                var tbody = $('#data_table tbody');
+                tbody.empty(); // Limpiar el cuerpo de la tabla antes de agregar nuevas filas
+
+                // Obtener los valores seleccionados de los elementos select
+                var selectedYear = $('#años').val();
+                var selectedMonth = $('#mes').val();
+
+                // Filtrar los datos en función del año y mes seleccionados
+                var filteredData = response.datos[0].filter(function (item) {
+                    var fecha_last = new Date(item.fecha_last);
+                    return fecha_last.getFullYear() == parseInt(selectedYear) && (fecha_last.getMonth() + 1) == parseInt(selectedMonth);
+                });
+
+                var contador = 1;
+                filteredData.forEach(function (item) {
+                    var row = $('<tr>');
+                    // Agregar la columna de enumeración
+                    row.append($('<td nowrap class="text-center">').text(contador));
+                    // Incrementar el contador
+                    contador++;
+
+                    row.append($('<td nowrap class="text-center">').text(item.nombres));
+                    row.append($('<td nowrap class="text-center">').text(item.apellidos));
+                    row.append($('<td nowrap class="text-center niño_id">').text(item.tipoDocumento));
+                    row.append($('<td nowrap class="text-center">').text(item.fechaNacimiento));
+                    row.append($('<td nowrap class="text-center">').text(item.edad));
+                    row.append($('<td nowrap class="text-center">').text(item.descripcionSexo));
+                    row.append($('<td nowrap class="text-center">').text(item.programaSocial));
+                    row.append($('<td nowrap class="text-center">').text(item.descripcionEsta));
+                    row.append($('<td nowrap class="text-center">').text(item.fecha_last));
+                    row.append($('<td nowrap class="text-center">').text(item.HG_last));
+                    row.append($('<td nowrap class="text-center">\
+                                    <button href="#" type="button" class="btn btn-success viewbtn">Ver todo</button>\
+                                </td>'));
+                    tbody.append(row);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error al obtener los datos:", error);
+            }
+        });
+    }
+
+    
+
+</script>
+<script>
+    $(document).ready(function () {
+        $('#import').click(function (e) {
+            e.preventDefault();
+            var selectedYear = $('#años').val();
+            var selectedMonth = $('#mes').val();
+            $.ajax({
+                type: "POST",
+                url: "/tabla_dataAnemia",
+                success: function (response) {
+                    var filteredData = response.datos[0].filter(function (item) {
+                        var fecha_last = new Date(item.fecha_last);
+                        return fecha_last.getFullYear() == parseInt(selectedYear) && (fecha_last.getMonth() + 1) == parseInt(selectedMonth);
+
+                    });
+                    var jsonData = JSON.stringify(filteredData)
+                    // console.log(jsonData);
+                    exportar(jsonData);
+                    // var jsonData = JSON.stringify(filteredData);
+                    // console.log(jsonData);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error al obtener los datos:", error);
+                },
+            });
+
+        })
+    })
+    function exportar(jsonData) {
+        // console.log(jsonData);
+        $.ajax({
+            type: "POST",
+            url: "/generar_excel",
+            contentType: "application/json", // Establecer el tipo de contenido como JSON
+            data: JSON.stringify({ 'jsonData': jsonData }), // Convertir los datos a formato JSON
+            success: function (response) {
+                // console.log('¡Éxito!'); 
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: 'El archivo Excel se ha generado correctamente.',
+                }).then(() => {
+                    // Redirigir a la descarga del archivo
+                    window.location.href = '/descargar_excel/' + response.filename;
+                });
+            },
+            error: function (xhr, status, error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un problema al generar el archivo Excel.',
+                });
+                console.error("Error al obtener los datos:", error);
+            }
+        });
+    }
+
+</script>

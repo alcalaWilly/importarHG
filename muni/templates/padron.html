@@ -1,0 +1,282 @@
+<div class="row text-center">
+    <div class="col">
+        <h1 class="titulo mb-4">RELACIÓN DE NIÑOS</h1>
+    </div>
+</div>
+
+<!-- Mostrar Modal -->
+<div class="modal fade" id="NiñosViewModal" tabindex="-1" aria-labelledby="registroLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5 font-weight-bold" id="registroLabel">PADRES DEL MENOR</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="#" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <!-- Columna para los datos del Padre -->
+                        <div class="col-md-6">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="registroLabel">Datos del Padre</h1>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nombresPadre" class="form-label">Nombres:</label>
+                                <label type="text" id="nombresPadre_view" class="form-control nombresPadre_view"></label>
+                            </div>
+                            <div class="mb-3">
+                                <label for="apellidosPadre" class="form-label">Apellidos:</label>
+                                <label type="text" id="apellidosPadre_view" class="form-control apellidosPadre_view"></label>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dniPadre" class="form-label">DNI:</label>
+                                <label type="text" id="dniPadre_view" class="form-control dniPadre_view"></label>
+                            </div>
+                        </div>
+                        <!-- Columna para los datos de la Madre -->
+                        <div class="col-md-6">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="registroLabel">Datos de la Madre</h1>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nombresMadre" class="form-label">Nombres:</label>
+                                <label type="text" id="nombresMadre_view" class="form-control nombresMadre_view"></label>
+                            </div>
+                            <div class="mb-3">
+                                <label for="apellidosMadre" class="form-label">Apellidos:</label>
+                                <label type="text" id="apellidosMadre_view" class="form-control apellidosMadre_view"></label>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dniMadre" class="form-label">DNI:</label>
+                                <label type="text" id="dniMadre_view" class="form-control dniMadre_view"></label>
+                            </div>
+                            <div class="mb-3">
+                                <label for="celularMadre" class="form-label">N° de Celular:</label>
+                                <label type="text" id="celularMadre_view" class="form-control celularMadre_view"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row g-4">
+
+    <div class="col-auto">
+        <label form="num_registros" class="col-form-label">Hay un total de:</label>
+    </div>
+
+    <div class="col-auto">
+        <label id="totalMenor" class="col-form-label">0</label>
+    </div>
+
+    <div class="col-auto">
+        <label form="num_registros" class="col-form-label">registros</label>
+    </div>
+
+    <div class="col-3"></div>
+
+    <div class="col-auto">
+        <label for="campo" class="col-form-label">Buscar: </label>
+    </div>
+    <div class="col-auto">
+        <input type="text" name="campo" id="campo" class="form-control" placeholder="DNI | Nobres| Apellidos">
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="message-show">
+    </div>
+</div>
+
+<div id="main-container" class="table-responsive">
+    <table id="data_table">
+        <thead>
+            <tr>
+                <th scope="col" nowrap class="text-center">num</th>
+                <th scope="col" nowrap class="text-center">Nombres</th>
+                <th scope="col" nowrap class="text-center">Apellidos</th>
+                <th scope="col" nowrap class="text-center">DNI</th>
+                <th scope="col" nowrap class="text-center">Fecha Nacimiento</th>
+                <th scope="col" nowrap class="text-center">Edad</th>
+                <th scope="col" nowrap class="text-center">Sexo</th>
+                <th scope="col" nowrap class="text-center">ProgramaSocial</th>
+                <th scope="col" nowrap class="text-center">Establecimiento</th>
+                <th scope="col" nowrap class="text-center">Más</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <div class="vol-6">
+        <label id="lbl-total"></label>
+    </div>
+
+    <div class="col-6" id="nav-paginacion">
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        function actualizarTabla(datos) {
+            var tbody = $('#data_table tbody');
+            tbody.empty(); // Limpiar el cuerpo de la tabla antes de agregar nuevas filas
+
+            // Definir el mapeo de valores numéricos a strings
+            var programaSocialMap = {
+                '0': 'NINGUNO',
+                '1': 'PIN',
+                '2': 'PVL',
+                '4': 'JUNTOS',
+                '5': 'QALIWARMA',
+                '7': 'CUNA+SCD',
+                '8': 'CUNA+SAF'
+            };
+
+            datos.slice(0, 5).forEach(function (item) {
+                var row = $('<tr>');
+                row.append($('<td nowrap class="text-center">').text(item.num));//edad
+                row.append($('<td nowrap class="text-center">').text(item.nombre));//nombres
+                row.append($('<td nowrap class="text-center">').text(item.apPaterno + ' ' + item.apMaterno));//apellidos
+                row.append($('<td nowrap class="text-center niño_id">').text(item.dni));//tipoDocumento
+                row.append($('<td nowrap class="text-center">').text(item.fechaNacimiento));//fechaNacimiento
+                row.append($('<td nowrap class="text-center">').text(item.edad));
+                row.append($('<td nowrap class="text-center">').text(item.sexo_descripcion));
+
+
+                // Reemplazar valores numéricos con el mapeo
+                var programaSocialNumeros = item.programaSocial.split(',').map(function (numero) {
+                    return programaSocialMap[numero] || numero;
+                });
+                var programaSocialTexto = programaSocialNumeros.join(', ');
+
+                row.append($('<td nowrap class="text-center">').text(programaSocialTexto));//programaSocial
+
+                row.append($('<td nowrap class="text-center">').text(item.establecimiento_descripcion));
+                row.append($('<td nowrap class="text-center">\
+                                    <button href="#" type="button" class="btn btn-success viewbtn">Ver todo</button>\
+                                </td>'));
+                tbody.append(row);
+            });
+
+            // Actualizar el total de registros
+            $('#totalMenor').text(datos.length);
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "/padron_de_niños",
+            success: function (response) {
+                var datos = response.datos[0]; // Acceder al array de datos
+                console.log(response);
+                if (Array.isArray(datos)) {
+                    // Guardar los datos originales para la búsqueda
+                    var datosOriginales = datos.slice();
+
+                    // Actualizar la tabla con los datos iniciales
+                    actualizarTabla(datos);
+
+                    // Actualizar el número total de registros
+                    $('#totalMenor').text(datos.length);
+
+                    // Filtrar la tabla en tiempo real
+                    $('#campo').on('keyup', function () {
+                        var valorBusqueda = $(this).val().toLowerCase();
+                        var datosFiltrados = datosOriginales.filter(function (item) {
+                            return Object.values(item).some(function (campo) {
+                                return String(campo).toLowerCase().includes(valorBusqueda);
+                            });
+                        });
+                        actualizarTabla(datosFiltrados);
+                    });
+                } else {
+                    console.error("Los datos recibidos no están en el formato esperado.");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error al obtener los datos:", error);
+            },
+        });
+    });
+
+    $(document).on("click", ".viewbtn", function () {
+        var niño_id = $(this).closest('tr').find('.niño_id').text();
+        //alert(niño_id);
+        // console.log(niño_id);
+        $.ajax({
+        type: "POST",
+        url: "/mostrarPadres",
+        data: {
+            'niño_id': niño_id,
+        },
+        success: function (response) {
+            console.log("Response:", response);
+
+            if (response.datos) {
+                // Actualizar los elementos HTML con los datos de la madre
+                if (response.datos.madre && response.datos.madre.length > 0) {
+                    var madre = response.datos.madre[0];
+                    updateElement('.nombresMadre_view', madre.nombresMadre);
+                    updateElement('.apellidosMadre_view', madre.apellidoPaterno_Madre + " " + madre.apellidomaterno_Madre);
+                    updateElement('.dniMadre_view', madre.dniMadre);
+                    updateElement('.celularMadre_view', madre.celularMadre);
+                }
+
+                // Actualizar los elementos HTML con los datos del padre
+                if (response.datos.padre && response.datos.padre.length > 0) {
+                    var padre = response.datos.padre[0];
+                    updateElement('.nombresPadre_view', padre.nombresPadre);
+                    updateElement('.apellidosPadre_view', padre.apellidoPaterno_Padre + " " + padre.apellidomaterno_Padre);
+                    updateElement('.dniPadre_view', padre.dniPadre);
+                }
+
+                $('#NiñosViewModal').modal('show'); // Mostrar el modal
+            } else {
+                console.log("No data found for the given niño_id");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', status, error);
+        }
+    });
+
+    function updateElement(selector, value) {
+        var element = $(selector);
+        element.text(value);
+        if (value) {
+            element.addClass('bg-success text-white');
+        } else {
+            element.removeClass('bg-success text-white');
+        }
+    }
+    });
+
+
+    //padre
+    //     $('.nombresPadre_view').text(niñosView['nombresPadre']);
+    //     $('.apellidosPadre_view').text(niñosView['apellidosPadre']);
+    //     $('.dniPadre_view').text(niñosView['dniPadre']);
+    //     $('.celularPadre_view').text(niñosView['celularPadre']);
+    //     $('.edadPadre_view').text(niñosView['edadPadre']);
+    //     //apoderado
+    //     $('.nombresApoderado_view').text(niñosView['nombresApod']);
+    //     $('.encargado_view').text(niñosView['descripcion']);
+    //     $('.apellidosApoderado_view').text(niñosView['apellidosApod']);
+    //     $('.dniApoderado_view').text(niñosView['dniApod']);
+    //     $('.celularApoderado_view').text(niñosView['celularApod']);
+    //     $('.edadApoderado_view').text(niñosView['edadApod']);
+    //     //edomicilio
+    //     $('.centro_poblado_view').text(niñosView['poblado']);
+    //     $('.eje_vial_view').text(niñosView['ejeVial']);
+    //     $('.direccion_view').text(niñosView['direccion']);
+    //     $('.referencia_view').text(niñosView['referencia']);
+</script>
